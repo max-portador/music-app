@@ -1,0 +1,11 @@
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.idea
+
+server/dist
+server/node_modules
+.DS_Store

@@ -1,12 +1,13 @@
-import {combineReducers, createStore, Dispatch, Store} from "redux";
+import {AnyAction, applyMiddleware, combineReducers, createStore, Dispatch, Store} from "redux";
 import playerReducer, {PlayerActionType} from "./reducers/playerReducer";
 import {Context, createWrapper, HYDRATE} from "next-redux-wrapper";
-import {ThunkDispatch} from "redux-thunk";
-import {configureStore} from "@reduxjs/toolkit";
+import thunk, {ThunkDispatch} from "redux-thunk";
+import trackReducer, {TrackActionType} from "./reducers/trackReducer";
 
 
 export const rootReducer = combineReducers( {
-    player: playerReducer
+    player: playerReducer,
+    track: trackReducer,
 })
 
 const reducer = (state, action) => {
@@ -23,7 +24,7 @@ const reducer = (state, action) => {
 };
 
 // create a makeStore function
-const makeStore = (context: Context) => createStore(reducer);
+const makeStore = (context: Context) => createStore(reducer, applyMiddleware(thunk));
 
 // export an assembled wrapper
 export const wrapper = createWrapper<Store<RootState>>(makeStore, {debug: true});
@@ -31,5 +32,7 @@ export const wrapper = createWrapper<Store<RootState>>(makeStore, {debug: true})
 export type RootState = ReturnType<typeof rootReducer>
 export type AppDispatch = Dispatch<AllActions> & ThunkDispatch<RootState, void, AllActions>
 export type InferActionsType<T> = T extends {[key: string]: (...args: any[]) => infer U} ? U : never
-
-export type AllActions = PlayerActionType
+export type NextThunkDispatch = ThunkDispatch<RootState, void, AnyAction>
+export type AllActions =
+    PlayerActionType |
+    TrackActionType

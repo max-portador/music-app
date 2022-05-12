@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import {Pause, PlayArrow, VolumeUp} from "@material-ui/icons";
 import {Grid, IconButton} from "@mui/material";
 import css from '../styles/Player.module.scss'
-import {ITrack} from "../types/track";
 import Progress from "./Progress";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import {useActions} from "../hooks/useAction";
@@ -18,8 +17,7 @@ const Player = () => {
             audio = new Audio();
         } else {
             setAudio()
-            playTrack()
-            audio.play()
+            // play()play
         }
     }, [active])
 

@@ -1,19 +1,28 @@
 import React from 'react';
 import {ITrack} from "../types/track";
 import {Card, Grid, IconButton} from "@mui/material";
-import css from '../styles/TrackItem.module.scss'
 import {Delete, Pause, PlayArrow} from "@material-ui/icons";
 import {useRouter} from "next/router";
+import {useActions} from "../hooks/useAction";
+import css from '../styles/TrackItem.module.scss'
 
 const TrackItem: React.FC<Props> = ({ track, active=false}) => {
     const router = useRouter()
+    const {playTrack, pauseTrack, setActive} = useActions()
+
     const handleClick = () => {
         router.push(`tracks/${track._id}`)
     }
 
+    const play = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setActive(track);
+        playTrack();
+    }
+
     return (
         <Card className={css.track} onClick={() => handleClick()}>
-            <IconButton onClick={(e)=> {e.stopPropagation()}}>
+            <IconButton onClick={play}>
                 {active
                 ? <Pause/>
                 : <PlayArrow/>

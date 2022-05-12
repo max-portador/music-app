@@ -18,13 +18,12 @@ const reducer = (state, action) => {
         if (state.count) nextState.count = state.count; // preserve count value on client side navigation
         return nextState;
     } else {
-        return rootReducer;
+        return rootReducer(state, action);
     }
 };
 
 // create a makeStore function
 const makeStore = (context: Context) => createStore(reducer);
-debugger
 
 // export an assembled wrapper
 export const wrapper = createWrapper<Store<RootState>>(makeStore, {debug: true});

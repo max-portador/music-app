@@ -12,9 +12,9 @@ const initialState = {
 export const playerReducer = (state = initialState, action: PlayerActionType): PlayerState => {
     switch (action.type){
         case PlayerActionTypesEnum.PLAY:
-            return {...state, pause: false}
+            return {...state, pause: false }
         case PlayerActionTypesEnum.PAUSE:
-            return {...state, pause: false}
+            return {...state, pause: true}
         case PlayerActionTypesEnum.SET_CURRENT_TIME:
             return {...state, currentTime: action.payload}
         case PlayerActionTypesEnum.SET_ACTIVE:

@@ -13,11 +13,12 @@ const TrackItem: React.FC<Props> = ({ track, active=false}) => {
 
     return (
         <Card className={css.track} onClick={() => handleClick()}>
-            <IconButton onClick={(e)=> {e.stopPropagation()}}>{
-                active
+            <IconButton onClick={(e)=> {e.stopPropagation()}}>
+                {active
                 ? <Pause/>
                 : <PlayArrow/>
-            }</IconButton>
+            }
+            </IconButton>
             <img src={track.picture} alt="" width={70} height={70}/>
             <Grid container direction='column' style={{width: 200, margin: '0 20px'}}>
                 <div>{track.name}</div>

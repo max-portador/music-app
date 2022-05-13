@@ -5,6 +5,7 @@ import css from '../styles/Player.module.scss'
 import Progress from "./Progress";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import {useActions} from "../hooks/useAction";
+import {baseURL} from "../api/base";
 
 let audio: HTMLAudioElement
 
@@ -23,7 +24,7 @@ const Player = () => {
 
     const setAudio = () => {
         if (active) {
-            audio.src = active.audio;
+            audio.src = `${baseURL}/${active.audio}`;
             audio.volume = volume / 100;
             audio.onloadedmetadata = () => {
                 setDuration(~~(audio.duration))

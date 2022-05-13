@@ -11,14 +11,15 @@ let audio: HTMLAudioElement
 
 const Player = () => {
     const {active, currentTime, duration, pause, volume} = useTypedSelector(state => state.player)
-    const {playTrack, pauseTrack, setVolume, setCurrentTime, setActive, setDuration} = useActions()
+    const {playTrack, pauseTrack, setVolume, setCurrentTime, setDuration} = useActions()
 
     useEffect(() => {
         if (!audio) {
             audio = new Audio();
         } else {
             setAudio()
-            // play()play
+            playTrack()
+            audio.play()
         }
     }, [active])
 

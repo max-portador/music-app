@@ -35,9 +35,7 @@ const trackActions = {
 export const fetchTracks = () => {
     return async (dispatch: Dispatch<TrackActionType>) => {
         try {
-
-            const tracks = await trackAPI.fetchTrack()
-            debugger
+            const tracks = await trackAPI.fetchTrackList()
             dispatch(trackActions.setTracks(tracks))
         }
         catch (e) {
@@ -47,7 +45,6 @@ export const fetchTracks = () => {
 }
 
 export default trackReducer
-
 
 
 

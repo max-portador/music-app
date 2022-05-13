@@ -1,0 +1,22 @@
+.comment_wrapper {
+  border: 1px solid lightgray;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  width: 300px;
+}
+
+.comment_username {
+  font-weight: bold;
+  border-bottom: 1px solid black;
+  width: max-content;
+  margin-bottom: 5px;
+}
+
+.comment_text {
+  border: 1px solid lightgray;
+  padding: 5px 10px;
+  width: max-content;
+  border-radius: 20px;
+  background: rgba(100, 100, 100, .05);
+}

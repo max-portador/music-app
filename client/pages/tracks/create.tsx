@@ -5,16 +5,31 @@ import {Button, Grid} from "@mui/material";
 import TrackInfoForm from "../../components/TrackInfoForm";
 import FileUpload from "../../components/FileUpload";
 import {useInput} from "../../hooks/useInput";
+import {useRouter} from "next/router";
+import trackAPI from "../../api/trackAPI";
 
 const Create = () => {
     const [activeStep, setActiveStep] = useState(0)
     const [picture, setPicture] = useState(null)
     const [audio, setAudio] = useState(null)
+    const name = useInput('')
+    const artist = useInput('')
+    const text = useInput('')
+    const router = useRouter();
 
 
-    const next = () => {
+    const next = async () => {
         if (activeStep !== 2) {
             setActiveStep((actual) => actual + 1)
+        } else {
+            const formData = new FormData();
+            formData.append('name', name.value)
+            formData.append('text', text.value)
+            formData.append('artist', artist.value)
+            formData.append('picture', picture)
+            formData.append('audio', audio)
+            await trackAPI.createTrack(formData)
+            router.push('/tracks')
         }
     }
 
@@ -27,7 +42,7 @@ const Create = () => {
             <StepWrapper activeStep={activeStep}>
                 {
                     activeStep === 0 &&
-                    <TrackInfoForm/>
+                    <TrackInfoForm name={name} artist={artist} text={text}/>
                 }
                 {
                     activeStep === 1 &&

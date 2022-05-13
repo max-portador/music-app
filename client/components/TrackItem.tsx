@@ -9,7 +9,7 @@ import {baseURL} from "../api/base";
 
 const TrackItem: React.FC<Props> = ({ track, active=false}) => {
     const router = useRouter()
-    const {playTrack, pauseTrack, setActive} = useActions()
+    const {playTrack, setActive} = useActions()
 
     const handleClick = () => {
         router.push(`tracks/${track._id}`)
@@ -29,7 +29,7 @@ const TrackItem: React.FC<Props> = ({ track, active=false}) => {
                 : <PlayArrow/>
             }
             </IconButton>
-            <img src={`${baseURL}/${track.picture}`} alt="" width={70} height={70}/>
+            <img src={`${baseURL}/${track?.picture}`} alt="" width={70} height={70}/>
             <Grid container direction='column' style={{width: 200, margin: '0 20px'}}>
                 <div>{track.name}</div>
                 <div style={{fontSize: 12, color: 'gray'}}>{track.artist}</div>

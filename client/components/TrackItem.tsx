@@ -6,25 +6,47 @@ import {useRouter} from "next/router";
 import {useActions} from "../hooks/useAction";
 import css from '../styles/TrackItem.module.scss'
 import {baseURL} from "../api/base";
+import {useTypedSelector} from "../hooks/useTypedSelector";
+import {audio} from "./Player";
 
 const TrackItem: React.FC<Props> = ({ track, active=false}) => {
     const router = useRouter()
-    const {playTrack, setActive} = useActions()
+    const { deleteTrack,  pauseTrack, playTrack, setActive } = useActions()
+    const { pause } = useTypedSelector(state => state.player)
 
     const handleClick = () => {
         router.push(`tracks/${track._id}`)
     }
 
+    const handleDeleteBtn = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (active){
+            setActive(null)
+        }
+        deleteTrack(track._id)
+    }
+
     const play = (e: React.MouseEvent) => {
         e.stopPropagation();
-        setActive(track);
-        playTrack();
+        if (!active) {
+            pauseTrack()
+            setActive(track);
+        } else {
+            if (!pause) {
+                pauseTrack()
+                audio.pause()
+            }
+            else {
+                playTrack()
+                audio.play()
+            }
+        }
     }
 
     return (
         <Card className={css.track} onClick={() => handleClick()}>
             <IconButton onClick={play}>
-                {active
+                {active && !pause
                 ? <Pause/>
                 : <PlayArrow/>
             }
@@ -34,9 +56,8 @@ const TrackItem: React.FC<Props> = ({ track, active=false}) => {
                 <div>{track.name}</div>
                 <div style={{fontSize: 12, color: 'gray'}}>{track.artist}</div>
             </Grid>
-            {active && <div>02:42 / 03:22</div>}
             <IconButton
-                onClick={(e)=> {e.stopPropagation()}}
+                onClick={handleDeleteBtn}
                 style={{marginLeft: 'auto'}}>
                 <Delete/>
             </IconButton>

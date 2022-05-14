@@ -7,19 +7,20 @@ import {useTypedSelector} from "../hooks/useTypedSelector";
 import {useActions} from "../hooks/useAction";
 import {baseURL} from "../api/base";
 
-let audio: HTMLAudioElement
+export let audio: HTMLAudioElement
 
 const Player = () => {
     const {active, currentTime, duration, pause, volume} = useTypedSelector(state => state.player)
-    const {playTrack, pauseTrack, setVolume, setCurrentTime, setDuration} = useActions()
+    const { tracks } = useTypedSelector(state => state.track)
+    const {playTrack, pauseTrack, setVolume, setActive, setCurrentTime, setDuration} = useActions()
 
     useEffect(() => {
         if (!audio) {
             audio = new Audio();
+            pauseTrack()
         } else {
             setAudio()
-            playTrack()
-            audio.play()
+            play()
         }
     }, [active])
 
@@ -33,6 +34,16 @@ const Player = () => {
 
             audio.ontimeupdate = () => {
                 setCurrentTime(~~(audio.currentTime))
+                if (audio.currentTime === audio.duration){
+                    pauseTrack()
+                    const index = tracks.indexOf(active)
+                    if (index < tracks.length - 1){
+                        setActive(tracks[index + 1])
+                    }
+                    else {
+                        setActive(tracks[0])
+                    }
+                }
             }
         }
 

@@ -1,7 +1,8 @@
 import {ITrack} from "../../types/track";
-import {InferActionsType} from "../index";
+import {InferActionsType, RootState} from "../index";
 import {Dispatch} from "redux";
 import trackAPI from "../../api/trackAPI";
+import {ThunkAction} from "redux-thunk";
 
 const initialState = {
     tracks: [] as ITrack[],
@@ -37,20 +38,43 @@ export const fetchTracks = () => {
         try {
             const tracks = await trackAPI.fetchTrackList()
             dispatch(trackActions.setTracks(tracks))
-        }
-        catch (e) {
+        } catch (e) {
             dispatch(trackActions.setTracksFetchErrorMessage('Произошла ошибка при загрузке треков'))
         }
     }
 }
 
+export const deleteTrack = (trackId: string): ThunkAction<void, RootState, unknown, TrackActionType> => {
+    return async (dispatch) => {
+        try {
+            await trackAPI.deleteTrack(trackId)
+            dispatch(await fetchTracks())
+        } catch (e) {
+            dispatch(trackActions.setTracksFetchErrorMessage('Произошла ошибка при загрузке треков'))
+        }
+    }
+}
+
+export const searchTrack = (term: string): ThunkAction<void, RootState, unknown, TrackActionType> => {
+    return async (dispatch) => {
+        try {
+            const tracks = await trackAPI.searchTrack(term)
+            dispatch(trackActions.setTracks(tracks))
+        } catch (e) {
+            dispatch(trackActions.setTracksFetchErrorMessage('Произошла ошибка при загрузке треков'))
+        }
+    }
+}
+
+
 export default trackReducer
 
 
-
 export type TrackState = typeof initialState
+
 export enum TrackActionTypesEnum {
     FETCH_TRACKS = 'FETCH_TRACKS',
     FETCH_TRACKS_ERROR = 'FETCH_TRACKS_ERROR'
 }
+
 export type TrackActionType = InferActionsType<typeof trackActions>
